@@ -396,14 +396,30 @@
               console.log("Compute top 3 repo for the carousel");
               getTopThreeRepo(repos);
 
+              // Determine the initial group and team from the URL tag
+              var urlTag = window.location.hash.substr(1).toLowerCase();
+              var initialGroup = "Home";
+              var initialTeam = "all";
+              for (var group of groups) {
+                if (urlTag == group.name.toLowerCase()) {
+                  initialGroup = group.name;
+                  break;
+                }
+                if (group.teams.indexOf(urlTag) != -1) {
+                  initialGroup = group.name;
+                  initialTeam = urlTag;
+                }
+              }
+
               // Initialize Main Navigation bar with groups
               $("#groupMenu").text("");
               for (var group of groups) {
                 var active = "";
-                if (group.name == "Home")
+                if (group.name == initialGroup) {
                   active = " active";
-                else
+                } else {
                   active = "";
+                }
 
                 console.log("Add group " + group.name);
                 $("#groupMenu").append($("<li>").attr("role", "presentation").addClass(active)
@@ -420,10 +436,11 @@
               for (var group of groups) {
                 // Initialize Team sub-panel per Group
                 var active = "";
-                if (group.name == "Home")
+                if (group.name == initialGroup) {
                   active = " active";
-                else
+                } else {
                   active = "";
+                }
 
                 var groupID = $("<div>").addClass("tab-pane" + active).attr("role", "tabpanel").attr("id", group.name);
                 var teamPanel = $("<div>").addClass("col-xs-12");
@@ -435,8 +452,12 @@
                 // Parse all teams of the group
                 console.log("\nProcess group " + group.name);
                 // Add All Team in Group sub-panel
-                teamList.append($("<li>").attr("role", "presentation").addClass("active")
-                  .append($("<a>").attr("href", "#All-" + group.name).attr("aria-controls", "All-" + group.name)
+                var teamItem = $("<li>").attr("role", "presentation");
+                if (initialTeam == "all") {
+                  teamItem.addClass("active");
+                }
+                teamList.append(teamItem
+                    .append($("<a>").attr("href", "#All-" + group.name).attr("aria-controls", "All-" + group.name)
                     .attr("role", "tab").attr("data-toggle", "tab")
                     .append($("<i>").addClass("icon-Apps"))
                     .append($("<span>").text("All"))));
@@ -447,13 +468,20 @@
                     console.log("  |-> Add team " + team.name);
                     teamAll.append($("<div>").addClass("col-xs-12").append($("<h3>").text(team.name)));
                     // Add Team in Group sub-panel
-                    teamList.append($("<li>").attr("role", "presentation")
+                    teamItem = $("<li>").attr("role", "presentation");
+                    if (team.slug == initialTeam) {
+                      teamItem.addClass("active");
+                    }
+                    teamList.append(teamItem
                       .append($("<a>").attr("href", "#" + team.slug).attr("aria-controls", team.slug)
                         .attr("role", "tab").attr("data-toggle", "tab")
                         .append($("<i>").addClass(team.icon))
                         .append($("<span>").text(team.name))));
                     var repoRow = $("<div>").addClass("tab-pane").attr("role", "tabpanel").attr("id", team.slug);
                     repoRow.append($("<div>").addClass("col-xs-12").append($("<h3>").text(team.name)));
+                    if (team.slug == initialTeam) {
+                      repoRow.addClass("active");
+                    }
 
                     // Parse all repos of the team
                     for (var rname of team.repo) {

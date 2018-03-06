@@ -8,6 +8,20 @@
 
 $(document).ready(function(){
 
+    if (window.location.hash != "") {
+        topPage = $(window.location.hash);
+        if (!topPage.is(":visible")) {
+            topPage = $("#repositories");
+        }
+
+        $(".navbar-nav li").removeClass("active");
+        $(".navbar-nav a[href='#repositories']").parent("li").addClass("active");
+
+        $('html, body').animate({
+            scrollTop: topPage.offset().top + 120,
+        }, 750);
+    }
+
 	/*--------------------------------------*\
                 SCROLL TO
     \*--------------------------------------*/
