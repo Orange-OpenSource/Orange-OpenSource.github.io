@@ -461,7 +461,10 @@
                     .attr("role", "tab").attr("data-toggle", "tab")
                     .append($("<i>").addClass("icon-Apps"))
                     .append($("<span>").text("All"))));
-                var teamAll = $("<div>").addClass("tab-pane active").attr("role", "tabpanel").attr("id", "All-" + group.name);
+                var teamAll = $("<div>").addClass("tab-pane").attr("role", "tabpanel").attr("id", "All-" + group.name);
+                if (initialTeam == "all") {
+                	teamAll.addClass("active");
+                }
                 for (var tname of group.teams) {
                   if (tname && MapTeams[tname]) {
                     var team = MapTeams[tname];
