@@ -69,7 +69,7 @@
   ];
 
   /* Mapping variables for Team and Repios manipulation */
-  var MapRepos = {};
+  var MapRepos = [];
   var MapTeams = {};
 
   /* Statistics */
@@ -369,6 +369,17 @@
 
   getNumMembers();
 
+  /* Compare two repositories by comparing their number of stargazers. */
+  function compareRepos(repo1, repo2) {
+    if (repo1.stargazers_count < repo2.stargazers_count) {
+      return 1;
+    }
+    if (repo1.stargazers_count == repo2.stargazers_count) {
+      return 0;
+    }
+    return -1;
+  }
+
   /* Get Teams en Repos and build the cards */
   function getRepoPerGroupAndTeam() {
     // First get Team table with Repo name
@@ -384,8 +395,9 @@
           if (repos && repos.length > 0) {
             // Prepare Repo Map
             for (var repo of repos) {
-              MapRepos[repo.name] = repo;
+              MapRepos.push(repo);
             }
+            MapRepos.sort(compareRepos);
 
             // Start processing
             $(function () {
@@ -487,11 +499,10 @@
                     }
 
                     // Parse all repos of the team
-                    for (var rname of team.repo) {
-                      if (rname && MapRepos[rname]) {
-                        // Add repo description
-                        repoRow.append(addRepo(MapRepos[rname]));
-                        teamAll.append(addRepo(MapRepos[rname]));
+                    for (var repo of MapRepos) {
+                      if (team.repo.indexOf(repo.name) != -1) {
+                        repoRow.append(addRepo(repo));
+                        teamAll.append(addRepo(repo));
                         repo_count++;
                       }
                     }
