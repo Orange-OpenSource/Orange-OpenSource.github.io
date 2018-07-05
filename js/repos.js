@@ -149,11 +149,12 @@
   }
 
   /* Compute elapse time from now */
-  function getUpdateOn(push) {
+ function getUpdateOn(push) {
     var currDate = new Date();
 
+    var minutes = currDate.getMinutes() - push.getMinutes();
     var hours = currDate.getHours() - push.getHours();
-    var days = push.getDay() - currDate.getDay();
+    var days = currDate.getDay() - push.getDay();
     var months = currDate.getMonth() - push.getMonth();
     var years = currDate.getYear() - push.getYear();
 
@@ -165,6 +166,9 @@
       return ("Updated " + days + " days ago");
     if (hours > 0)
       return ("Updated " + hours + " hours ago");
+    if (minutes > 0)
+      return ("Updated " + minutes + " minutes ago");
+    return ("Updated less than a minute ago");
   }
 
   /* Create information to the "repo card" */
