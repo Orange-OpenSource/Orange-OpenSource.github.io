@@ -1,5 +1,7 @@
 /*
  * Orange GitHub main js - v0.2
+ * SPDX-FileCopyrightText: (C) 2017 - 2024 Orange
+ * SPDX-License-Identifier: Apache-2.0
  *
  * (C) 2017 Orange, all right reserved
  * 

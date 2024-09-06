@@ -1,5 +1,7 @@
 /*
  * Orange GitHub repos list viewer - v0.4
+ * SPDX-FileCopyrightText: (C) 2017 - 2024 Orange
+ * SPDX-License-Identifier: Apache-2.0
  *
  * (C) 2017 Orange, all right reserved
  * 
@@ -41,7 +43,6 @@
       "teams": [
         "accessibility",
         "apache-mod",
-        "datavenue",
         "glpi-for-telco",
         "javascript",
         "other-projects",
@@ -116,7 +117,7 @@
       repo_head.append($("<a>").attr("href", repo.html_url + "/stargazers").text('').append(star));
     }
 
-    repo_head.append($("<p>").addClass("caption-subtitle").text("Made with " + repo.language));
+    repo_head.append($("<p>").addClass("caption-subtitle").text("Made with " + (repo.language ? repo.language : "love")));
 
     // Repo information
     var info = $("<div>").addClass("caption-content");
@@ -180,7 +181,7 @@
     var header = ($("<div>").addClass("pull-left")).appendTo(repo_head);
     header.append($("<h3>").addClass("repo-title")
       .append($("<a>").attr("href", repo.html_url).text(repo.name)))
-      .append($("<p>").addClass("repo-subtitle").text("Made with " + repo.language));
+      .append($("<p>").addClass("repo-subtitle").text("Made with " + (repo.language ? repo.language : "love")));
     // Compute number of star if >= 10
     if (repo.stargazers_count >= 10) {
       var star = $("<ul>").addClass("pull-right list-inline");
